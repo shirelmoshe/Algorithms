@@ -1,0 +1,37 @@
+package org.example;
+
+import java.util.*;
+
+public class SumOfPairs {
+    public static int[] findPair(int[] nums, int targetSum) {
+        Map<Integer, Integer> encountered = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int difference = targetSum - nums[i];
+            if (encountered.containsKey(difference)) {
+                return new int[]{difference, nums[i]};
+            }
+            encountered.put(nums[i], i);
+        }
+
+        return null;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the target sum: ");
+        int targetSum = scanner.nextInt();
+
+        int[] nums = {10, 5, 2, 3, 7, 5};
+        int[] pair = findPair(nums, targetSum);
+
+        if (pair != null) {
+            System.out.println("Pair values: " + pair[0] + ", " + pair[1]);
+        } else {
+            System.out.println("No pair found.");
+        }
+
+        scanner.close();
+    }
+}
