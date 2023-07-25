@@ -1,0 +1,64 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class RomanNumeralsConverter {
+
+    private static final Map<Integer, String> INTEGER_MAP = new LinkedHashMap<>();
+
+    static {
+        INTEGER_MAP.put(1000, "M");
+        INTEGER_MAP.put(900, "CM");
+        INTEGER_MAP.put(500, "D");
+        INTEGER_MAP.put(400, "CD");
+        INTEGER_MAP.put(100, "C");
+        INTEGER_MAP.put(90, "XC");
+        INTEGER_MAP.put(50, "L");
+        INTEGER_MAP.put(40, "XL");
+        INTEGER_MAP.put(10, "X");
+        INTEGER_MAP.put(9, "IX");
+        INTEGER_MAP.put(5, "V");
+        INTEGER_MAP.put(4, "IV");
+        INTEGER_MAP.put(1, "I");
+    }
+
+    public static int romanToInteger(String romanNumeral) {
+        int result = 0;
+        int currentIndex = 0;
+
+        for (int value : INTEGER_MAP.keySet()) {
+            String romanSymbol = INTEGER_MAP.get(value);
+            while (romanNumeral.startsWith(romanSymbol, currentIndex)) {
+                result += value;
+                currentIndex += romanSymbol.length();
+            }
+        }
+
+        return result;
+    }
+
+    public static String integerToRoman(int num) {
+        if (num <= 0 || num >= 4000) {
+            throw new IllegalArgumentException("Input number must be between 1 and 3999.");
+        }
+
+        StringBuilder romanNumeral = new StringBuilder();
+
+        for (int value : INTEGER_MAP.keySet()) {
+            while (num >= value) {
+                romanNumeral.append(INTEGER_MAP.get(value));
+                num -= value;
+            }
+        }
+
+        return romanNumeral.toString();
+    }
+
+    public static void main(String[] args) {
+    
+        System.out.println(romanToInteger("MCMXC"));   
+       
+
+        System.out.println(integerToRoman(1990)); 
+      
+    }
+}
