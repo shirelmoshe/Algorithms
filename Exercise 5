@@ -1,0 +1,67 @@
+package org.example;
+
+public class Maze {
+    enum Direction {
+        N, S, W, E
+    }
+
+    int startX = 0;
+    int startY = 0;
+
+    public String mazeRunner(int[][] maze, Direction[] directions) {
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        findStart(maze);
+
+        int currentX = startX;
+        int currentY = startY;
+        for (Direction direction : directions) {
+            int directionIndex = direction.ordinal();
+            int newX = currentX + dx[directionIndex];
+            int newY = currentY + dy[directionIndex];
+
+            if (newX < 0 || newX >= maze.length || newY < 0 || newY >= maze[0].length || maze[newX][newY] == 1) {
+                return "Dead";
+            } else if (maze[newX][newY] == 3) {
+                return "Finish";
+            }
+
+            currentX = newX;
+            currentY = newY;
+        }
+
+        return "Lost";
+    }
+
+    public void findStart(int[][] maze) {
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (maze[i][j] == 2) {
+                    startX = i;
+                    startY = j;
+                    return;
+                }
+            }
+        }
+    }
+    public static void main(String[] args) {
+        int[][] maze = {
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 0, 0, 0, 0, 0, 3},
+                {1, 0, 1, 0, 1, 0, 1},
+                {0, 0, 1, 0, 0, 0, 1},
+                {1, 0, 1, 0, 1, 0, 1},
+                {1, 0, 0, 0, 0, 0, 1},
+                {1, 2, 1, 0, 1, 0, 1}
+        };
+
+        Direction[] directions = {Direction.N, Direction.N, Direction.N, Direction.E, Direction.N, Direction.E, Direction.E, Direction.E, Direction.E, Direction.E};
+
+        // Create an instance of the Maze class and call the mazeRunner method
+        Maze mazeSolver = new Maze();
+        String result = mazeSolver.mazeRunner(maze, directions);
+
+        System.out.println("Result: " + result);
+    }
+}
