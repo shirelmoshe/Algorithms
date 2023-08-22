@@ -1,0 +1,99 @@
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MORSCODE
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            MorsCode morsCode = new MorsCode();
+            var input = ".... . -.--   .--- ..- -.. .";
+            var translatedSentence = morsCode.TranslateMorseToText(input);
+
+            Console.WriteLine(translatedSentence);
+            Console.ReadLine();
+        }
+    }
+
+    public class MorsCode
+    {
+        Dictionary<string, string> morseDictionary = new Dictionary<string, string>()
+              {
+            { ".-", "A" },
+            { "-...", "B" },
+            { "-.-.", "C" },
+            { "-..", "D" },
+            { ".", "E" },
+            { "..-.", "F" },
+            { "--.", "G" },
+            { "....", "H" },
+            { "..", "I" },
+            { ".---", "J" },
+            { "-.-", "K" },
+            { ".-..", "L" },
+            { "--", "M" },
+            { "-.", "N" },
+            { "---", "O" },
+            { ".--.", "P" },
+            { "--.-", "Q" },
+            { ".-.", "R" },
+            { "...", "S" },
+            { "-", "T" },
+            { "..-", "U" },
+            { "...-", "V" },
+            { ".--", "W" },
+            { "-..-", "X" },
+            { "-.--", "Y" },
+            { "--..", "Z" },
+            { "-----", "0" },
+            { ".----", "1" },
+            { "..---", "2" },
+            { "...--", "3" },
+            { "....-", "4" },
+            { ".....", "5" },
+            { "-....", "6" },
+            { "--...", "7" },
+            { "---..", "8" },
+            { "----.", "9" },
+
+        };
+
+        public string[] SeparationOfWords(string sentence)
+        {
+            return sentence.Split(new string[] { "   " }, StringSplitOptions.None);
+        }
+
+        public string CharacterSeparator(string word)
+        {
+            var characters = word.Split(' ');
+            StringBuilder translatedWord = new StringBuilder();
+
+            foreach (var ch in characters)
+            {
+                if (morseDictionary.TryGetValue(ch, out string singleCharacter))
+                {
+                    translatedWord.Append(singleCharacter);
+                }
+            }
+
+            return translatedWord.ToString();
+        }
+
+        public string TranslateMorseToText(string morseInput)
+        {
+            var wordsInMorse = SeparationOfWords(morseInput);
+            List<string> translatedWords = new List<string>();
+
+            foreach (var morseWord in wordsInMorse)
+            {
+                var translatedWord = CharacterSeparator(morseWord);
+                translatedWords.Add(translatedWord);
+            }
+
+            return string.Join(" ", translatedWords);
+        }
+    }
+}
